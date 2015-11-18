@@ -1,6 +1,6 @@
 # Users
 
-## users#create
+### users#create
 * create a new User
 * parameters
     * ``` javascript
@@ -22,7 +22,7 @@
 		}
 	  ```
 
-## users/#destroy
+### users/#destroy
 * disable the user account of the current_user
 * parameters
     * ``` javascript
@@ -42,7 +42,7 @@
 		}
 	  ```
 
-## users/:alias_id#index
+### users/:alias_id#index
 * shows all posts by a particular alias, given by the alias_id
 * parameters
     * ``` javascript
@@ -74,7 +74,7 @@
 			}
 	  ```
 
-## user/:alias_name#index
+### user/:alias_name#index
 * shows all posts by a particular alias, given by the alias_name
 * parameters
     * ``` javascript
@@ -108,7 +108,7 @@
 
 # Aliases
 
-## alias#create
+### alias#create
 * create a new alias for the current_user if it hasn't been taken
 * parameters
     * ``` javascript
@@ -128,7 +128,7 @@
 		}
 	  ```
 
-## alias#index
+### alias#index
 * get all aliases for the current_user
 * parameters
     * ``` javascript
@@ -144,7 +144,7 @@
 		}
 	  ```
 
-## alias/:id#destroy
+### alias/:id#destroy
 * disable an alias if it belongs to the current_user
 * parameters
     * ``` javascript
@@ -162,7 +162,7 @@
 	}
 	  ```
 
-## alias/:id#block
+### alias/:id#block
 * current_user blocks all microposts by the alias specified by its id
 * parameters
     * ``` javascript
@@ -180,7 +180,7 @@
 	}
 	  ```
 
-## alias/:alias_name#block
+### alias/:alias_name#block
  * current_user blocks all microposts by the alias specified by its alias_name
  * parameters
     * ``` javascript
@@ -200,7 +200,7 @@
 
 # Sessions
 
-## sessions#create
+### sessions#create
 * create a session for a User if authentication is successful
 * parameters
     * ``` javascript
@@ -221,7 +221,7 @@
 	}
 	  ```
 
-## sessions#destroy
+### sessions#destroy
 * log out of the current_user session
 * parameters
     * ``` javascript
@@ -241,11 +241,17 @@
 
 # Microposts
 
-## microposts#create
+### microposts#create
 * create a micropost by the current_user
 * parameters
     * ``` javascript
-			{}
+			{
+				alias_id: int,
+				parents: [parent.micropost_id,...],
+				recipients: [recipient.alias_name,...],
+				content: text,
+				hashtags: [hashtag_name,...]
+			}
 	  ```
 * response
     * ``` javascript
@@ -259,7 +265,7 @@
 	}
 	  ```
 
-## microposts/:id#show
+### microposts/:id#show
 * get a single micropost given by its id
 * parameters
     * ``` javascript
@@ -267,46 +273,84 @@
 	  ```
 * response
     * ``` javascript
-			{}
+	{
+		id: int,
+		alias_name: str,
+		created_at: datetime,
+		parents : [parent.id,...],
+		content : text,
+		hashtags: [{
+			name: str,
+			count: int
+			},...],
+		//only returns a finite number of comments
+		//if comment_count is greater than that number, "view all comments" link appears
+		comment_count: int,
+		comments: [comment.id,...]
+	}		
 	  ```
 
-## microposts#index
+### microposts#index
 * get all the microposts published by the current_user
 * parameters
     * ``` javascript
-			{}
+			{
+				//filter by alias
+				alias_name: str,(optional)
+				alias_id:str (optional)
+			}
 	  ```
 * response
     * ``` javascript
-			{}
+			{
+				microposts: [{
+					id: int,
+					alias_name: str,
+					created_at: datetime,
+					parents : [parent.id,...],
+					content : text,
+					hashtags: [{
+						name: str,
+						count: int
+						},...],
+					//only returns a finite number of comments
+					//if comment_count is greater than that number, "view all comments" link appears
+					comment_count: int,
+					comments: [comment.id,...]
+					},...]
+			}
 	  ```
 
-## microposts/:id#comment
+### microposts/:id#comment
 * assign a micropost as the comment of the micropost specified by its id
     * this action is performed during microposts#create if the new micropost is specified as a comment
 * parameters
     * ``` javascript
-			{}
+			{
+				micropost_id: int
+			}
 	  ```
 * response
     * ``` javascript
 			{}
 	  ```
 
-## microposts/:id/hashtags/#create
+### microposts/:id/hashtags#create
 * assign a hashtag to the micropost specified by its id
     * this action is performed during microposts#create if the new micropost contains a hashtag string
 	* if the new micropost has only a comment specifier and a hashtag, then the hashtag is appended to the parent micropost
 * parameters
     * ``` javascript
-			{}
+			{
+				hashtag_name: str
+			}
 	  ```
 * response
     * ``` javascript
 			{}
 	  ```
 
-## microposts/:id/hashtags/#index
+### microposts/:id/hashtags#index
 * get all of the hashtags associated with the micropost specified by its id
 * parameters
     * ``` javascript
@@ -314,12 +358,18 @@
 	  ```
 * response
     * ``` javascript
-			{}
+			{
+				micropost_id: int,
+				hashtags: [{
+					name: str,
+					count: int
+					},...]
+			}
 	  ```
 
 # Flags
 
-## flags/:micropost_id#update
+### flags/:micropost_id#update
 * change the current_user's flag states of the micropost specified by its micropost_id
 * parameters
     * ``` javascript
@@ -330,7 +380,7 @@
 			{}
 	  ```
 
-## flags#index
+### flags#index
 * get all of the microposts with active flags for the current_user
 * parameters
     * ``` javascript
@@ -343,7 +393,7 @@
 
 # Messages
 
-## messages/:alias_id#create
+### messages/:alias_id#create
 * assign a micropost as a message to an alias given by its alias_id
     * this action is only performed during microposts#create if the new micropost contains a callout string
 	* when this action is called, the recipient will have the new micropost flagged with the unread message flag
@@ -356,7 +406,7 @@
 			{}
 	  ```
 
-## messages#index
+### messages#index
 * get all messages sent to the current_user
 * parameters
     * ``` javascript
@@ -369,7 +419,7 @@
 
 # Subscriptions
 
-## subscriptions/user/:alias_id#create
+### subscriptions/user/:alias_id#create
 * subscribe the current_user to posts created under an alias specified by its alias_id
 * parameters
     * ``` javascript
@@ -380,7 +430,7 @@
 			{}
 	  ```
 
-## subscriptions/user/:alias_name#create
+### subscriptions/user/:alias_name#create
 * subscribe the current_user to posts created under an alias specified by its alias_name
 * parameters
     * ``` javascript
@@ -391,7 +441,7 @@
 			{}
 	  ```
 
-## subscriptions/:hashtag#create
+### subscriptions/:hashtag#create
 * subscribe the current_user to posts appended with the hashtag specified by :hashtag
 * parameters
     * ``` javascript
@@ -402,7 +452,7 @@
 			{}
 	  ```
 
-## subscriptions/user/:alias_id#destroy
+### subscriptions/user/:alias_id#destroy
 * unsubscribe the current_user to posts created under an alias specified by its alias_id
 * parameters
     * ``` javascript
@@ -413,7 +463,7 @@
 			{}
 	  ```
 
-## subscriptions/user/:alias_name#destroy
+### subscriptions/user/:alias_name#destroy
 * unsubscribe the current_user to posts created under an alias specified by its alias_name
 * parameters
     * ``` javascript
@@ -424,7 +474,7 @@
 			{}
 	  ```
 
-## subscriptions/:hashtag#destroy
+### subscriptions/:hashtag#destroy
 * unsubscribe the current_user to posts appended with the hashtag specified by :hashtag
 * parameters
     * ``` javascript
@@ -437,7 +487,7 @@
 
 # Miscellaneous
 
-## feed
+### feed
 * get the micropost feed for the current_user
     * the feed is the collection of recent posts made by subscribed aliases and tagged with subscribed hashtags
 * parameters
