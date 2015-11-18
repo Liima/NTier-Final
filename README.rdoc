@@ -5,6 +5,7 @@ Use Cases:
 	Routes required:
 I want to create an account
 	I want my account to register an ##alias
+
 I want to destroy my account
 I want to log in
 I want to log out
@@ -27,7 +28,8 @@ I want to search for posts
 	I want to search by #hashtag
 	I want to search by @username
 
-
+I want to subscribe to @usernames and #hashtags
+	I want a feed loads posts by my subscriptions
 
 
 
