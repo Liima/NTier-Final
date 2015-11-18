@@ -1,0 +1,59 @@
+== README
+
+
+Use Cases:
+	Routes required:
+I want to create an account
+	I want my account to register an ##alias
+I want to destroy my account
+I want to log in
+I want to log out
+I want to post a micropost
+	I want to make a post anonymously by default or post under an alias with user##alias
+	I want to see my microposts
+
+I want to comment on one or many microposts
+	I want to flag a post for later
+	I want to see my flags
+I want to call out a user by his username with @username in micropost
+	I want to see messages that were called out to me
+	I want new messages to me to be marked with an unread flag.
+		I want to flag old messages as unread.
+
+I want to append a #hashtag to my own or one or many of my parent microposts
+	I want to see the #hashtags appended to posts and how many of each
+
+I want to search for posts
+	I want to search by #hashtag
+	I want to search by @username
+
+
+
+
+
+This README would normally document whatever steps are necessary to get the
+application up and running.
+
+Things you may want to cover:
+
+* Ruby version
+
+* System dependencies
+
+* Configuration
+
+* Database creation
+
+* Database initialization
+
+* How to run the test suite
+
+* Services (job queues, cache servers, search engines, etc.)
+
+* Deployment instructions
+
+* ...
+
+
+Please feel free to use a different markup language if you do not plan to run
+<tt>rake doc:app</tt>.
